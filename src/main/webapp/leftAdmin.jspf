@@ -1,0 +1,117 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" charset="utf8" src="scripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="scripts/custom.js"></script>
+    <%--<link rel="stylesheet" href="styles/bootstrap.min.css">--%>
+    <%--<link rel="stylesheet" href="styles/bootstrap-theme.min.css">--%>
+    <script src="scripts/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+
+        #leftCol {
+            width: 200px;
+            margin-left: 30px;
+        }
+
+        #masthead h1 {
+            font-size: 30px;
+            line-height: 1;
+            padding-top: 20px;
+        }
+
+        #masthead .well {
+            margin-top: 8%;
+        }
+
+        @media screen and (min-width: 768px) {
+            #masthead h1 {
+                font-size: 50px;
+            }
+        }
+
+        #sidebar li.active {
+            border: 0 #eee solid;
+            border-right-width: 5px;
+        }
+
+        #editBtn {
+            border-radius: 0;
+        }
+
+        #createBtn {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        #deleteBtn {
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+        }
+
+        #btnGroup {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var pageName = document.getElementById('pageName');
+            var editButton = document.getElementById('editBtn');
+            var deleteButton = document.getElementById('deleteBtn');
+            if (pageName.value == 'clubCard') {
+                editButton.setAttribute("class", 'list-group-item disabled');
+                editButton.setAttribute("type", 'button');
+            }
+        };
+    </script>
+</head>
+<body>
+<div class="col-md-3" id="leftCol">
+    <div id="btnGroup" class="list-group">
+        <form method="post">
+            <%--<jsp:useBean id="entity" scope="session" type="java.lang.String"/>--%>
+            <%--<input type="hidden" name="pageName" id="pageName" value="${entity}"/>--%>
+            <input type="hidden" id="selectedEntity" name="selectedEntity"/>
+            <button formaction="${pageContext.request.contextPath}/Controller?action=CreateEntityAction" type="submit"
+                    style="margin-bottom: 0" id="createBtn" class="list-group-item"><fmt:message
+                    key="left.create"/></button>
+            <button formaction="${pageContext.request.contextPath}/Controller?action=EditEntityAction" type="submit"
+                    style="margin-top: 0" id="editBtn" class="list-group-item"><fmt:message key="left.edit"/></button>
+            <!-- Button trigger modal -->
+            <button type="button" style="margin-top: 1px;" id="deleteBtn" class="list-group-item" data-toggle="modal"
+                    data-target="#myModal"><fmt:message key="left.delete"/></button>
+            <%--<button formaction="${pageContext.request.contextPath}/Controller?action=DeleteEntityAction" type="submit" style="margin-top: 1px;" id="deleteBtn" class="list-group-item">Delete</button>--%>
+        </form>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><fmt:message key="conf.delete"/></h4>
+                    </div>
+                    <div class="modal-body"><span style="font-size:large;" class="label label-danger"><fmt:message
+                            key="conf.deletion"/></span></div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <form style="width: 100px;" method="post"><input type="hidden" name="removableEntity"
+                                                                             id="removableEntity"/>
+                                <span><button type="button" class="btn btn-default " data-dismiss="modal"><fmt:message
+                                        key="no"/></button></span>
+                                <input type="hidden" name="modalConfirmationEntity" id="modalConfirmationEntity"/>
+                                <button formaction="${pageContext.request.contextPath}/Controller?action=DeleteEntityAction"
+                                        type="submit" class="btn btn-primary"><fmt:message key="yes"/></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

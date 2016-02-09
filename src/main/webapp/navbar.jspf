@@ -1,0 +1,79 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="i18n"/>
+<script type="text/javascript" charset="utf8" src="scripts/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" href="styles/bootstrap.min.css">
+<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+<%--<link rel="stylesheet" href="styles/metro-bootstrap.min.css">--%>
+<script src="scripts/bootstrap.min.js"></script>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container" style="width: auto">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><fmt:message key="project.name"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a
+                        href="${pageContext.request.contextPath}/Controller?action=AbonementShowAction"><fmt:message
+                        key="nav.abonements"/></a></li>
+                <li style="height: 50px;">
+                    <form action="${pageContext.request.contextPath}/Controller?action=ClubCardShowAction">
+                        <button formmethod="post"
+                                style="margin-left: 10px; border-bottom-right-radius: 0; border-top-right-radius: 0"
+                                class="btn btn-info navbar-btn"><fmt:message key="nav.clubCard"/></button>
+                    </form>
+                </li>
+                <li style="height: 50px;">
+                    <form action="${pageContext.request.contextPath}/Controller?action=ServiceShowAction">
+                        <button formmethod="post" style="border-radius: 0" class="btn btn-info navbar-btn"><fmt:message
+                                key="nav.services"/></button>
+                    </form>
+                </li>
+                <li style="height: 50px;">
+                    <form action="${pageContext.request.contextPath}/Controller?action=ClientShowAction">
+                        <button formmethod="post" style="border-radius: 0" class="btn btn-info navbar-btn"><fmt:message
+                                key="nav.clients"/></button>
+                    </form>
+                </li>
+                <li style="height: 50px;">
+                    <form action="${pageContext.request.contextPath}/Controller?action=TrainerShowAction">
+                        <button formmethod="post" style="border-radius: 0" class="btn btn-info navbar-btn"><fmt:message
+                                key="nav.trainers"/></button>
+                    </form>
+                </li>
+                <li style="height: 50px;">
+                    <form action="${pageContext.request.contextPath}/Controller?action=PasswordChangeAction">
+                        <button formmethod="post" style="border-bottom-left-radius: 0; border-top-left-radius: 0"
+                                class="btn btn-info navbar-btn"><fmt:message key="nav.password"/></button>
+                    </form>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li style="height: 50px;">
+                    <a>
+                        <form>
+                            <select id="language" name="language" onchange="submit()">
+                                <option value="kk" ${language == 'kk' ? 'selected' : ''}>Қазақ</option>
+                                <option value="ru" ${language == 'ru' ? 'selected' : ''}>Русский</option>
+                                <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+                            </select>
+                        </form>
+                    </a>
+                </li>
+                <li><a href="#"><fmt:message key="role"/>: ${account.name}, №: ${account.clubCard.clubCardNumber}</a>
+                </li>
+                <li style="height: 50px;">
+                    <form method="post" action="${pageContext.request.contextPath}/Controller?action=LogoutAction">
+                        <button name="logout" type="submit" class="btn btn-default navbar-btn"><fmt:message
+                                key="nav.logout"/></button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
