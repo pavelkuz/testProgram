@@ -7,5 +7,5 @@ public interface DaoFactory<T extends AbstractDao> {
 
     void freeConnection(Connection connection);
 
-    T getDao(Class clazz, JdbcDaoFactory jdbcDaoFactory);
+    T getDao(Class clazz);
 }

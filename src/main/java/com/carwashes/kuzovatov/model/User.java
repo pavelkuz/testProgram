@@ -1,7 +1,5 @@
 package com.carwashes.kuzovatov.model;
 
-import org.boon.Str;
-
 public class User extends NamedEntity {
     private String login;
     private String password;
@@ -11,7 +9,7 @@ public class User extends NamedEntity {
     public User() {
     }
 
-    public User(String id, String name, String login, String password, UserRole role, Deleted isDeleted) {
+    public User(int id, String name, String login, String password, UserRole role, Deleted isDeleted) {
         super(id, name);
         this.password = password;
         this.role = role;

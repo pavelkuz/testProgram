@@ -5,19 +5,23 @@ import java.util.List;
 
 public class CarWash extends NamedEntity {
     private String address;
+    private String description;
     private String phone;
     private int boxCount;
+    private float latitude;
+    private float longtitude;
     private SimpleDateFormat openTime;
     private SimpleDateFormat closeTime;
     private List<Service> services;
     private List<Box> boxes;
-    private Deleted isDeleted;
+    private Deleted deleted;
+    private int isDeleted;
     private User user;
 
     public CarWash() {
     }
 
-    public CarWash(String id, List<Box> boxes, List<Service> services, User user, Deleted isDeleted, String name, String address, String phone, int boxCount, SimpleDateFormat openTime, SimpleDateFormat closeTime) {
+    public CarWash(int id, String description, float latitude, float longtitude, int isDeleted, List<Box> boxes, List<Service> services, User user, Deleted deleted, String name, String address, String phone, int boxCount, SimpleDateFormat openTime, SimpleDateFormat closeTime) {
         super(id, name);
         this.address = address;
         this.phone = phone;
@@ -26,12 +30,44 @@ public class CarWash extends NamedEntity {
         this.closeTime = closeTime;
         this.services = services;
         this.boxes = boxes;
-        this.isDeleted = isDeleted;
+        this.deleted = deleted;
         this.user = user;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.isDeleted = isDeleted;
+        this.description = description;
     }
 
-    public void setIsDeleted(Deleted isDeleted) {
+    public void setIsDeleted(int isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(float longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public void setDeleted(Deleted deleted) {
+        this.deleted = deleted;
     }
 
     public User getUser() {
@@ -98,17 +134,12 @@ public class CarWash extends NamedEntity {
         this.closeTime = closeTime;
     }
 
-    public Deleted isDeleted() {
+    public Deleted getDeleted() {
+        return deleted;
+    }
+
+    public int getIsDeleted() {
         return isDeleted;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted().equals(Deleted.YES);
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-        if (isDeleted)this.isDeleted=Deleted.YES;
-        else this.isDeleted=Deleted.NO;
     }
 
     private enum Deleted{YES,NO}

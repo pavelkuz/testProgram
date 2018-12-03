@@ -13,7 +13,7 @@ public class WashContract extends NamedEntity {
     public WashContract() {
     }
 
-    public WashContract(String id, String name, List<Service> services, Client client, CarWash carWash, boolean isDone, SimpleDateFormat timeRemaining) {
+    public WashContract(int id, String name, List<Service> services, Client client, CarWash carWash, boolean isDone, SimpleDateFormat timeRemaining) {
         super(id, name);
         this.client = client;
         this.carWash = carWash;

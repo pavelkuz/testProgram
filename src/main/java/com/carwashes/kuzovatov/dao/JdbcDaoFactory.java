@@ -30,7 +30,7 @@ public class JdbcDaoFactory<T extends AbstractDao> implements DaoFactory {
     }
 
     @Override
-    public T getDao(Class clazz, JdbcDaoFactory jdbcDaoFactory) {
+    public T getDao(Class clazz) {
         T t = null;
         try {
             t = (T) clazz.newInstance();
@@ -38,7 +38,7 @@ public class JdbcDaoFactory<T extends AbstractDao> implements DaoFactory {
             log.error("InstantiationException or IllegalAccessException was occurred: "+e);
         }
         assert t != null;
-        t.setFactory(jdbcDaoFactory);
+        t.setFactory(this);
         return t;
     }
 }

@@ -2,11 +2,8 @@ package com.carwashes.kuzovatov.action.actions;
 
 import com.carwashes.kuzovatov.action.View;
 import com.carwashes.kuzovatov.action.Action;
-import com.carwashes.kuzovatov.dao.JdbcDaoFactory;
-import com.carwashes.kuzovatov.dao.ServiceDao;
-import com.carwashes.kuzovatov.dao.UserDao;
-import com.carwashes.kuzovatov.model.Service;
-import com.carwashes.kuzovatov.model.User;
+import com.carwashes.kuzovatov.dao.*;
+import com.carwashes.kuzovatov.model.*;
 import com.carwashes.kuzovatov.servlet.Controller;
 import org.apache.log4j.Logger;
 import org.boon.Boon;
@@ -15,61 +12,57 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
 
 public class LoginAction implements Action {
     private static final Logger log = Logger.getLogger(LoginAction.class);
-    List<User> userList;
-    List<Service> serviceList;
+    private static final String SIZE = "size";
+    private static final String NOT_ANSWERED = "not_answered";
+    private static final String CORRECT = "correct";
+    private static final String INCORRECT = "incorrect";
+    private static final String PUPIL = "pupil";
+    private static final String RESULT = "result";
+    private static final String QUESTION = "question";
+    private static final String QUESTIONS = "questions";
+    private static final String QUESTION_NUMBER = "question_number";
     private JdbcDaoFactory jdbcDaoFactory = Controller.getJdbcDaoFactory();
-    UserDao userDao = (UserDao) jdbcDaoFactory.getDao(UserDao.class, jdbcDaoFactory);
-    ServiceDao serviceDao = (ServiceDao) jdbcDaoFactory.getDao(ServiceDao.class, jdbcDaoFactory);
+    private ExamineeDao examineeDao = (ExamineeDao) jdbcDaoFactory.getDao(ExamineeDao.class);
+    private QuestionDao questionDao = (QuestionDao) jdbcDaoFactory.getDao(QuestionDao.class);
+    private AnswerDao answerDao = (AnswerDao) jdbcDaoFactory.getDao(AnswerDao.class);
 
     @Override
     public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         View view = new View();
         HttpSession session = request.getSession(true);
-        String userName = request.getParameter("txtUserName");
-        String password = request.getParameter("txtPassword");
-        User user = userDao.findByLogin(userName);
-        if (password.equals(user.getPassword())) {
-            session.setAttribute("account", user);
-            request.setAttribute("account", user);
-            if (user.getRole().getName().equals("administrator")) {
-                serviceList = serviceDao.findAll();
-                session.setAttribute("serviceList", Boon.toJson(serviceList));
-                request.setAttribute("serviceList", Boon.toJson(serviceList));
-                view.setPath("adminPage.jsp");
-                view.setRedirect(true);
-                return view;
-            }
-            else{
-                serviceList = serviceDao.findAll();
-                session.setAttribute("serviceList", Boon.toJson(serviceList));
-                request.setAttribute("serviceList", Boon.toJson(serviceList));
-                view.setPath("clientPage.jsp");
-                view.setRedirect(true);
-                return view;
-            }
-        } else {
-            String passwordIncorrect = "";
-            request.setAttribute("passwordIncorrect", passwordIncorrect);
-            session.setAttribute("passwordIncorrect", passwordIncorrect);
-            String userNameIncorrect = "";
-            request.setAttribute("userNameIncorrect", userNameIncorrect);
-            session.setAttribute("userNameIncorrect", userNameIncorrect);
-            if(!userName.equals(user.getLogin())){
-                userNameIncorrect = "Invalid username was entered. Check it and try again!.";
-                request.setAttribute("userNameIncorrect", userNameIncorrect);
-                session.setAttribute("userNameIncorrect", userNameIncorrect);
-            }else{
-                passwordIncorrect = "Password incorrect, check it and try again, if its repeat than contact with administrator!";
-                request.setAttribute("passwordIncorrect", passwordIncorrect);
-                session.setAttribute("passwordIncorrect", passwordIncorrect);
-            }
-            view.setPath("errorCredentials.jsp");
-            view.setRedirect(true);
-            return view;
+        String txtUserName = request.getParameter("txtUserName");
+        String txtGroup = request.getParameter("txtGroup");
+        Examinee examinee = new Examinee();
+        examinee.setName(txtUserName);
+        examinee.setGroup(txtGroup);
+        examineeDao.save(examinee);
+        session.setAttribute(PUPIL, examinee);
+        prepareQuestions(session);
+        session.setAttribute(NOT_ANSWERED, 0);
+        session.setAttribute(CORRECT, 0);
+        session.setAttribute(INCORRECT, 0);
+        view.setPath("testPage.jsp");
+        view.setRedirect(true);
+        return view;
+    }
+
+    private void prepareQuestions(HttpSession session){
+        session.setAttribute(QUESTION_NUMBER, 0);
+        List<Question> questions = questionDao.findAll();
+        for (Question question : questions){
+            List<Answer> answers = answerDao.findAllByQuestionId(question.getId());
+            Collections.shuffle(answers);
+            question.setAnswers(answers);
         }
+        log.info("GOT QUESTIONS SIZE: " + questions.size());
+        session.setAttribute(SIZE, questions.size());
+        session.setAttribute(QUESTIONS, questions);
+        session.setAttribute(QUESTION, questions.get(0));
+        session.setAttribute(RESULT, 0);
     }
 }

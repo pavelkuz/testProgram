@@ -8,7 +8,7 @@ public class Administrator extends NamedEntity {
     public Administrator() {
     }
 
-    public Administrator(String id, String name, String login, String password, Deleted isDeleted) {
+    public Administrator(int id, String name, String login, String password, Deleted isDeleted) {
         super(id, name);
         this.password = password;
         this.isDeleted = isDeleted;

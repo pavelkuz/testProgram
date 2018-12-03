@@ -6,7 +6,7 @@ public class UserRole extends NamedEntity {
     public UserRole() {
     }
 
-    public UserRole(String id, String name, Deleted isDeleted) {
+    public UserRole(int id, String name, Deleted isDeleted) {
         super(id, name);
         this.isDeleted = isDeleted;
     }

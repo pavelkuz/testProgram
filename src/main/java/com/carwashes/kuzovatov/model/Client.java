@@ -8,7 +8,7 @@ public class Client extends BaseEntity {
     public Client() {
     }
 
-    public Client(String id, String phone, String carNumber, String carModel) {
+    public Client(int id, String phone, String carNumber, String carModel) {
         super(id);
         this.carNumber = carNumber;
         this.carModel = carModel;

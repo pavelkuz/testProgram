@@ -9,7 +9,7 @@ public class Pretender extends NamedEntity {
     public Pretender() {
     }
 
-    public Pretender(String id, String name, String phone, String address, String email, String password) {
+    public Pretender(int id, String name, String phone, String address, String email, String password) {
         super(id, name);
         this.phone = phone;
         this.address = address;

@@ -11,7 +11,7 @@ public class Service extends NamedEntity {
     public Service() {
     }
 
-    public Service(String id, CarWash carWash, String name, BigDecimal price, SimpleDateFormat duration) {
+    public Service(int id, CarWash carWash, String name, BigDecimal price, SimpleDateFormat duration) {
         super(id, name);
         this.price = price;
         this.duration = duration;

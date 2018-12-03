@@ -11,7 +11,7 @@ public class Box extends NamedEntity {
     public Box() {
     }
 
-    public Box(String id, CarWash carWash, int boxNumber, String name, SimpleDateFormat timeRemaining, boolean isEmpty) {
+    public Box(int id, CarWash carWash, int boxNumber, String name, SimpleDateFormat timeRemaining, boolean isEmpty) {
         super(id, name);
         this.isEmpty = isEmpty;
         this.timeRemaining = timeRemaining;
